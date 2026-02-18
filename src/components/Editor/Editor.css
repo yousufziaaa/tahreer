@@ -1,0 +1,308 @@
+.editor-page {
+  min-height: 100vh;
+  background-color: #fafaf8;
+  transition: background-color 0.2s ease;
+}
+
+[data-theme='dark'] .editor-page {
+  background-color: #1a1a1a;
+}
+
+.editor-scroll {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 100px 32px 120px;
+}
+
+.editor-title {
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #737373;
+  margin-bottom: 24px;
+  outline: none;
+  cursor: text;
+  min-height: 1.2em;
+  -webkit-user-select: text;
+  user-select: text;
+  transition: color 0.2s ease;
+}
+
+[data-theme='dark'] .editor-title {
+  color: #b0b0b0;
+}
+
+.editor-title:empty:before {
+  content: 'Untitled...';
+  color: #999;
+  pointer-events: none;
+}
+
+[data-theme='dark'] .editor-title:empty:before {
+  color: #666;
+}
+
+.editor-title:focus {
+  outline: none;
+}
+
+.editor-title[data-placeholder]:empty:before {
+  content: attr(data-placeholder);
+  color: #999;
+}
+
+[data-theme='dark'] .editor-title[data-placeholder]:empty:before {
+  color: #666;
+}
+
+/* ── TipTap prose ── */
+
+.tiptap-editor {
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #737373;
+  outline: none;
+  caret-color: #737373;
+  transition: color 0.2s ease, caret-color 0.2s ease;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* Enable visual spellcheck indicators */
+.tiptap-editor::spelling-error {
+  text-decoration: wavy underline red;
+  text-decoration-thickness: 1px;
+}
+
+.tiptap-editor::grammar-error {
+  text-decoration: wavy underline blue;
+  text-decoration-thickness: 1px;
+}
+
+[data-theme='dark'] .tiptap-editor {
+  color: #b0b0b0;
+  caret-color: #b0b0b0;
+}
+
+.tiptap-editor p {
+  margin: 0 0 1em;
+}
+
+.tiptap-editor h1 {
+  font-size: 2em;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0 0 0.5em;
+}
+
+.tiptap-editor h2 {
+  font-size: 1.4em;
+  font-weight: 600;
+  line-height: 1.35;
+  margin: 1.25em 0 0.4em;
+}
+
+.tiptap-editor h3 {
+  font-size: 1.2em;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 1.25em 0 0.4em;
+}
+
+.tiptap-editor h4 {
+  font-size: 1.1em;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 1.25em 0 0.4em;
+}
+
+.tiptap-editor blockquote {
+  border-left: 3px solid #e0e0e0;
+  padding-left: 16px;
+  color: #666;
+  font-style: italic;
+  margin: 1em 0;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+[data-theme='dark'] .tiptap-editor blockquote {
+  border-left: 3px solid #3a3a3a;
+  color: #888;
+}
+
+.tiptap-editor a {
+  text-decoration: underline;
+  color: inherit;
+}
+
+.tiptap-editor img {
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+.tiptap-editor ul {
+  list-style-type: disc;
+  padding-left: 1.5em;
+  margin: 1em 0;
+}
+
+.tiptap-editor li {
+  margin: 0.5em 0;
+}
+
+/* ── Toolbar ── */
+
+.editor-toolbar {
+  position: fixed;
+  top: 24px;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 48px;
+  background-color: #fafaf8;
+  transition: background-color 0.2s ease;
+}
+
+[data-theme='dark'] .editor-toolbar {
+  background-color: #1a1a1a;
+}
+
+.toolbar-center {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.editor-back-button {
+  position: fixed;
+  top: 12px;
+  left: 24px;
+  z-index: 100;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 500;
+  color: #999999;
+  transition: all 0.15s ease;
+}
+
+.editor-back-button:hover {
+  background: #f0f0ee;
+  color: #737373;
+}
+
+[data-theme='dark'] .editor-back-button {
+  color: #999999;
+}
+
+[data-theme='dark'] .editor-back-button:hover {
+  background: #2a2a2a;
+  color: #d0d0d0;
+}
+
+.toolbar-btn-left {
+  position: relative;
+  z-index: 1;
+}
+
+.toolbar-btn-right {
+  position: relative;
+  z-index: 1;
+  margin-left: auto;
+}
+
+.toolbar-btn {
+  height: 32px;
+  min-width: 32px;
+  padding: 0 10px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 500;
+  color: #999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.toolbar-btn:hover {
+  background: #f0f0ee;
+  color: #737373;
+}
+
+[data-theme='dark'] .toolbar-btn:hover {
+  background: #2a2a2a;
+  color: #d0d0d0;
+}
+
+.toolbar-btn.is-active {
+  background: #e8e8e6;
+  color: #737373;
+  font-weight: 600;
+}
+
+[data-theme='dark'] .toolbar-btn.is-active {
+  background: #3a3a3a;
+  color: #d0d0d0;
+}
+
+.toolbar-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+}
+
+/* ── Counter ── */
+
+.editor-counter {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  font-size: 12px;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #999999;
+  font-weight: 400;
+  transition: color 0.2s ease;
+}
+
+[data-theme='dark'] .editor-counter {
+  color: #888888;
+}
+
+.editor-clock {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  font-size: 12px;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #999999;
+  font-weight: 400;
+  transition: color 0.2s ease;
+}
+
+[data-theme='dark'] .editor-clock {
+  color: #888888;
+}

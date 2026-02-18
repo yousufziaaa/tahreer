@@ -1,0 +1,282 @@
+.home-page {
+  min-height: 100vh;
+  background-color: #fafaf8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 80px;
+  transition: background-color 0.2s ease;
+}
+
+[data-theme='dark'] .home-page {
+  background-color: #1a1a1a;
+}
+
+.home-container {
+  width: 100%;
+  max-width: 640px;
+  padding: 0 32px;
+}
+
+.home-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.home-title {
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a1a1a;
+  transition: color 0.2s ease;
+}
+
+[data-theme='dark'] .home-title {
+  color: #e0e0e0;
+}
+
+.home-title-link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  transition: opacity 0.15s ease, color 0.2s ease;
+}
+
+.home-title-link:hover {
+  opacity: 0.7;
+}
+
+.home-new-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #1a1a1a;
+  padding: 0;
+  text-decoration: none;
+  transition: opacity 0.15s ease, color 0.2s ease;
+}
+
+[data-theme='dark'] .home-new-button {
+  color: #e0e0e0;
+}
+
+.home-new-button:hover {
+  opacity: 0.7;
+  color: #737373;
+}
+
+[data-theme='dark'] .home-new-button:hover {
+  color: #c0c0c0;
+}
+
+.home-pieces-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.home-piece-item {
+  border-bottom: 1px solid #e8e8e6;
+  transition: border-color 0.2s ease;
+}
+
+[data-theme='dark'] .home-piece-item {
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.home-piece-item:last-child {
+  border-bottom: none;
+}
+
+.home-piece-button {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 12px;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.15s ease;
+}
+
+.home-piece-button:hover {
+  background-color: #f0f0ee;
+}
+
+[data-theme='dark'] .home-piece-button:hover {
+  background-color: #2a2a2a;
+}
+
+.home-piece-title {
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #1a1a1a;
+  flex-shrink: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+[data-theme='dark'] .home-piece-title {
+  color: #e0e0e0;
+}
+
+.home-piece-meta {
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: #999999;
+  flex-shrink: 0;
+  white-space: nowrap;
+  margin-left: 16px;
+  transition: color 0.2s ease;
+}
+
+[data-theme='dark'] .home-piece-meta {
+  color: #888888;
+}
+
+.home-loading,
+.home-empty {
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  color: #999999;
+  text-align: center;
+  transition: color 0.2s ease;
+}
+
+[data-theme='dark'] .home-loading,
+[data-theme='dark'] .home-empty {
+  color: #888888;
+}
+
+/* ── Counter ── */
+
+.home-counter {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  font-size: 12px;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #999999;
+  font-weight: 400;
+  transition: color 0.2s ease;
+}
+
+[data-theme='dark'] .home-counter {
+  color: #888888;
+}
+
+.home-counter-link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: none;
+  transition: opacity 0.15s ease, color 0.2s ease;
+}
+
+.home-counter-link:hover {
+  opacity: 0.7;
+  color: #737373;
+}
+
+[data-theme='dark'] .home-counter-link:hover {
+  color: #c0c0c0;
+}
+
+.home-clock {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  font-size: 12px;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #999999;
+  font-weight: 400;
+  transition: color 0.2s ease;
+}
+
+[data-theme='dark'] .home-clock {
+  color: #888888;
+}
+
+/* ── Context Menu ── */
+
+.home-context-menu {
+  background-color: #ffffff;
+  border: 1px solid #e8e8e6;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 4px;
+  z-index: 1000;
+  min-width: 140px;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+[data-theme='dark'] .home-context-menu {
+  background-color: #2a2a2a;
+  border-color: #3a3a3a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.home-context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #1a1a1a;
+  text-align: left;
+  transition: background-color 0.15s ease, color 0.2s ease;
+}
+
+[data-theme='dark'] .home-context-menu-item {
+  color: #e0e0e0;
+}
+
+.home-context-menu-item:hover {
+  background-color: #f0f0ee;
+}
+
+[data-theme='dark'] .home-context-menu-item:hover {
+  background-color: #3a3a3a;
+}
+
+.home-context-menu-item svg {
+  flex-shrink: 0;
+  color: #999999;
+  transition: color 0.2s ease;
+}
+
+[data-theme='dark'] .home-context-menu-item svg {
+  color: #888888;
+}
+
+.home-context-menu-item.delete:hover svg {
+  color: #d32f2f;
+}
+
+[data-theme='dark'] .home-context-menu-item.delete:hover svg {
+  color: #f44336;
+}

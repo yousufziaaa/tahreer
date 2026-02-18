@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm run tauri:*)",
+      "Bash(export PATH=\"$HOME/.cargo/bin:$PATH\")",
+      "Bash(lsof:*)",
+      "Bash(xargs:*)",
+      "Bash(npx tsc:*)",
+      "Bash(PATH=\"$HOME/.cargo/bin:$PATH\" npm run tauri dev:*)"
+    ]
+  }
+}
