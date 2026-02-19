@@ -38,6 +38,22 @@ interface Piece {
   wordCount: number;
 }
 ```
+## Groups Feature
+Pieces can belong to a group (optional). Groups have a name and a color.
+Groups are stored in a separate `groups.json` file in the pieces directory.
+Each piece stores a `groupId` (string | null) referencing a group.
+
+Group data shape:
+{
+  id: string
+  name: string
+  color: string  // hex value
+}
+
+groups.json shape:
+{
+  groups: Group[]
+}
 
 ## Storage Layer (src/lib/storage.ts)
 All filesystem operations go through these functions using Tauri's `@tauri-apps/plugin-fs` API:

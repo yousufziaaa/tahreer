@@ -13,7 +13,10 @@
       "Bash(brew list:*)",
       "Bash(python3:*)",
       "Bash(pip3 install:*)",
-      "Bash(/Users/yzia/.volta/bin/npm run tauri icon /Users/yzia/Desktop/tahreer/public/tahreer_rounded.png)"
+      "Bash(/Users/yzia/.volta/bin/npm run tauri icon /Users/yzia/Desktop/tahreer/public/tahreer_rounded.png)",
+      "Bash(/Users/yzia/.volta/bin/npm --prefix /Users/yzia/Desktop/tahreer run tauri build)",
+      "Bash(PATH=\"$HOME/.cargo/bin:$HOME/.volta/bin:/opt/homebrew/bin:/usr/local/bin:$PATH\" /Users/yzia/.volta/bin/npm run tauri build:*)",
+      "Bash(git checkout:*)"
     ]
   }
 }

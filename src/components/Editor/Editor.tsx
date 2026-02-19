@@ -1,12 +1,16 @@
 import { useRef, useState, useEffect } from 'react'
-import { useEditor, EditorContent, JSONContent } from '@tiptap/react'
+import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link'
 import Image from '@tiptap/extension-image'
 import Typography from '@tiptap/extension-typography'
-import { loadPiece, savePiece } from '../../lib/storage'
-import { Piece } from '../../lib/types'
+import { loadPiece, savePiece, loadGroups, createGroup, updatePieceGroup } from '../../lib/storage'
+import { Piece, Group } from '../../lib/types'
 import './Editor.css'
+
+const PRESET_COLORS = [
+  '#6B8F6A', '#7A6B8F', '#8F6B6B', '#6B7A8F', '#8F7E6B', '#6B8F87',
+]
 
 interface EditorProps {
   pieceId: string | null
@@ -26,10 +30,50 @@ export function Editor({ pieceId, onBack }: EditorProps) {
   const titleInputRef = useRef<HTMLDivElement>(null)
   const titleRef = useRef<string>('Untitled...')
 
+  // Group state
+  const [groups, setGroups] = useState<Group[]>([])
+  const [pieceGroupId, setPieceGroupId] = useState<string | null>(null)
+  const [groupDropdownOpen, setGroupDropdownOpen] = useState(false)
+  const [editorNewGroupMode, setEditorNewGroupMode] = useState(false)
+  const [editorNewGroupName, setEditorNewGroupName] = useState('')
+  const pieceGroupIdRef = useRef<string | null>(null)
+  const groupDropdownRef = useRef<HTMLDivElement>(null)
+  const editorNewGroupInputRef = useRef<HTMLInputElement>(null)
+
   // Keep titleRef in sync with title state
   useEffect(() => {
     titleRef.current = title
   }, [title])
+
+  // Load groups on mount
+  useEffect(() => {
+    loadGroups().then(setGroups)
+  }, [])
+
+  // Close group dropdown on outside click; reset new-group form
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        groupDropdownRef.current &&
+        !groupDropdownRef.current.contains(event.target as Node)
+      ) {
+        setGroupDropdownOpen(false)
+        setEditorNewGroupMode(false)
+        setEditorNewGroupName('')
+      }
+    }
+    if (groupDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [groupDropdownOpen])
+
+  // Focus new-group input when it appears inside the editor dropdown
+  useEffect(() => {
+    if (editorNewGroupMode && editorNewGroupInputRef.current) {
+      editorNewGroupInputRef.current.focus()
+    }
+  }, [editorNewGroupMode])
 
   // Update clock every second
   useEffect(() => {
@@ -91,6 +135,8 @@ export function Editor({ pieceId, onBack }: EditorProps) {
           const loadedTitle = piece.title || 'Untitled...'
           setTitle(loadedTitle)
           titleRef.current = loadedTitle
+          pieceGroupIdRef.current = piece.groupId
+          setPieceGroupId(piece.groupId)
           editor.commands.setContent(piece.content)
           const text = editor.getText()
           setWordCount(text.trim() ? text.trim().split(/\s+/).length : 0)
@@ -125,6 +171,7 @@ export function Editor({ pieceId, onBack }: EditorProps) {
           createdAt: createdAtRef.current,
           updatedAt: new Date().toISOString(),
           wordCount: words,
+          groupId: pieceGroupIdRef.current,
         }
         savePiece(piece)
       }, 800)
@@ -154,6 +201,7 @@ export function Editor({ pieceId, onBack }: EditorProps) {
           createdAt: createdAtRef.current,
           updatedAt: new Date().toISOString(),
           wordCount: words,
+          groupId: pieceGroupIdRef.current,
         }
         savePiece(piece)
       }
@@ -223,6 +271,7 @@ export function Editor({ pieceId, onBack }: EditorProps) {
           createdAt: createdAtRef.current,
           updatedAt: new Date().toISOString(),
           wordCount: words,
+          groupId: pieceGroupIdRef.current,
         }
         savePiece(piece)
       }
@@ -242,20 +291,148 @@ export function Editor({ pieceId, onBack }: EditorProps) {
     if (url) editor?.chain().focus().setLink({ href: url }).run()
   }
 
-  const promptImage = () => {
-    const url = window.prompt('Enter image URL')
-    if (url) editor?.chain().focus().setImage({ src: url }).run()
+  const handleGroupChange = async (groupId: string | null) => {
+    pieceGroupIdRef.current = groupId
+    setPieceGroupId(groupId)
+    setGroupDropdownOpen(false)
+    setEditorNewGroupMode(false)
+    setEditorNewGroupName('')
+    await updatePieceGroup(idRef.current, groupId)
   }
+
+  const handleEditorCreateGroup = async () => {
+    const trimmed = editorNewGroupName.trim()
+    if (!trimmed) return
+    const color = PRESET_COLORS[Math.floor(Math.random() * PRESET_COLORS.length)]
+    const group = await createGroup(trimmed, color)
+    setGroups((prev) => [...prev, group])
+    setEditorNewGroupName('')
+    await handleGroupChange(group.id)
+  }
+
+  const currentGroup = groups.find((g) => g.id === pieceGroupId) ?? null
 
   return (
     <div className="editor-page">
-      {/* Back Button */}
-      <button onClick={onBack} className="editor-back-button" title="Back">
-        ←
-      </button>
-
       {/* Toolbar */}
       <div className="editor-toolbar">
+        <div className="editor-toolbar-inner">
+          <button onClick={onBack} className="editor-back-button" title="Back">
+            ←
+          </button>
+
+          {/* Group selector */}
+          <div className="editor-group-selector" ref={groupDropdownRef}>
+            <button
+              className="editor-group-trigger"
+              onClick={() => setGroupDropdownOpen((prev) => !prev)}
+            >
+              {currentGroup ? (
+                <span
+                  className="group-dot-sm"
+                  style={{ backgroundColor: currentGroup.color }}
+                />
+              ) : (
+                <span className="group-dot-sm group-dot-none" />
+              )}
+              <span className="editor-group-trigger-name">
+                {currentGroup?.name ?? 'No group'}
+              </span>
+              <svg
+                className={`group-chevron${groupDropdownOpen ? ' open' : ''}`}
+                width="10"
+                height="10"
+                viewBox="0 0 12 12"
+                fill="none"
+              >
+                <path
+                  d="M2.5 4.5L6 8L9.5 4.5"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+
+            {groupDropdownOpen && (
+              <div className="editor-group-dropdown">
+                <button
+                  className={`group-dropdown-item${pieceGroupId === null ? ' is-active' : ''}`}
+                  onClick={() => handleGroupChange(null)}
+                >
+                  <span className="group-dot-sm group-dot-none" />
+                  <span className="group-dropdown-item-name">No group</span>
+                  {pieceGroupId === null && (
+                    <span className="group-check">✓</span>
+                  )}
+                </button>
+                {groups.map((g) => (
+                  <button
+                    key={g.id}
+                    className={`group-dropdown-item${pieceGroupId === g.id ? ' is-active' : ''}`}
+                    onClick={() => handleGroupChange(g.id)}
+                  >
+                    <span
+                      className="group-dot-sm"
+                      style={{ backgroundColor: g.color }}
+                    />
+                    <span className="group-dropdown-item-name">{g.name}</span>
+                    {pieceGroupId === g.id && (
+                      <span className="group-check">✓</span>
+                    )}
+                  </button>
+                ))}
+
+                <div className="group-dropdown-divider" />
+
+                {!editorNewGroupMode ? (
+                  <button
+                    className="group-dropdown-item group-new-trigger"
+                    onClick={() => setEditorNewGroupMode(true)}
+                  >
+                    <span className="group-new-label">+ New Group</span>
+                  </button>
+                ) : (
+                  <div className="group-new-form">
+                    <input
+                      ref={editorNewGroupInputRef}
+                      className="group-new-input"
+                      value={editorNewGroupName}
+                      onChange={(e) => setEditorNewGroupName(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') handleEditorCreateGroup()
+                        if (e.key === 'Escape') {
+                          setEditorNewGroupMode(false)
+                          setEditorNewGroupName('')
+                        }
+                      }}
+                      placeholder="Group name…"
+                    />
+                    <div className="group-new-actions">
+                      <button
+                        className="group-new-cancel"
+                        onClick={() => {
+                          setEditorNewGroupMode(false)
+                          setEditorNewGroupName('')
+                        }}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        className="group-new-confirm"
+                        onClick={handleEditorCreateGroup}
+                        disabled={!editorNewGroupName.trim()}
+                      >
+                        Create
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
 
         <div className="toolbar-center">
           <button

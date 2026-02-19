@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "deploy": "npm run tauri build && cp -r src-tauri/target/release/bundle/macos/tahreer.app /Applications/"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
